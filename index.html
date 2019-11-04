@@ -2,18 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <title>Title</title>
 
 </head>
 <body>
 <h1>AJAX</h1>
-<input type="button" id="btnRepos" value="Repos">
-<input type="button" id="btnReposXML" value="ReposXML">
-<div>
-    <select name="repos" id="listRepos">
-    </select>
+<div class="task">
+    <input type="button" id="btnRepos" value="Repos">
+    <div>
+        <select name="repos" id="listRepos">
+        </select>
+    </div>
 </div>
-<div id="watchers"></div>
+
+<div class="task">
+    <input type="button" id="btnReposXML" value="ReposXML">
+    <div id="watchers"></div>
+</div>
+
+<div class="task">
+    <input type="button" id="btnInfoRepos" value="About Repos">
+    <div id="infoRepos"></div>
+</div>
+
 <script src="main.js"></script>
 </body>
 </html>
