@@ -2,7 +2,9 @@ const  btnRepos = document.getElementById("btnRepos");
 const  btnReposXML = document.getElementById("btnReposXML");
 const btnInfoRepos = document.getElementById("btnInfoRepos");
 const selectRepos = document.getElementById("listRepos");
+const btnRefresh = document.getElementById("btnRefresh");
 
+//список ваших репозиториев
 btnRepos.addEventListener("click", getRepos);
 async function getRepos() {
     clear();
@@ -26,6 +28,7 @@ function clear() {
     };
 }
 
+// лучший по watchers_count
 btnReposXML.addEventListener("click", getReposXML);
 async function getReposXML() {
     let xhr = new XMLHttpRequest();
@@ -50,4 +53,36 @@ async function getInfoRepos(){
     const result = await response.json();
     let divWat = document.getElementById('infoRepos');
     divWat.innerHTML = `${result[0].name}`;
+}
+
+btnRefresh.addEventListener("click", infoRefresh);
+
+function infoRefresh(elem) {
+    const url = "https://api.github.com/users/PolinaSkoraya/repos";
+    function showMessage(message) {
+        let messageElem = document.createElement('div');
+        messageElem.append(message);
+        elem.append(messageElem);
+    }
+async function refresh() {
+    let response = await fetch(url);
+    if (response.status == 502) {
+        // Таймаут подключения
+        // случается, когда соединение ждало слишком долго.
+        // давайте восстановим связь
+        await refresh();
+    } else if (response.status != 200) {
+        // Показать ошибку
+        showMessage(response.statusText);
+        // Подключиться снова через секунду.
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await refresh();
+    } else {
+        // Получить сообщение
+        await getRepos();
+        await getReposXML();
+        await refresh();
+    }
+}
+    refresh();
 }
